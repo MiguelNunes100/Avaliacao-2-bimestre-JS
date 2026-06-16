@@ -1,6 +1,6 @@
-# Catálogo de Produtos — API REST com Node.js + MySQL
+# Catálogo de Produtos - API REST com Node.js + MySQL
 
-**Avaliação do 2º Bimestre — Linguagem de Programação para Web I (JavaScript)**  
+**Avaliação do 2º Bimestre - Linguagem de Programação para Web I (JavaScript)**  
 **Faculdade Senac · ADS · 2026**
 
 **Grupo:**
