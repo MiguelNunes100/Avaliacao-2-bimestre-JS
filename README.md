@@ -28,7 +28,7 @@
 
 ### 2. Criar o banco de dados
 
-#### Opção A — Script Python (recomendado, automático) 🐍
+#### Opção A — Script Python (automático e recomendado)
 
 Instale as dependências Python (só na primeira vez):
 
@@ -70,7 +70,7 @@ DB_NAME=loja_db
 PORT=3000
 ```
 
-> ⚠️ O arquivo `.env` **não vai para o GitHub** (está no `.gitignore`).  
+> Atenção: O arquivo `.env` **não vai para o GitHub** (está no `.gitignore`).  
 > Use o arquivo `.env-modelo` como referência.
 
 ---
