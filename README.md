@@ -131,48 +131,6 @@ Avaliacao-2-bimestre-JS/
 
 ---
 
-## Guia de Apresentação Acadêmica (Roteiro da Equipe)
-
-Este guia foi criado para ajudar o grupo (**Miguel Miranda Nunes** & **Arthur Queiroz de Andrade**) a explicar o funcionamento técnico do projeto de maneira clara e direta durante a avaliação acadêmica.
-
-### 1. Resumo do Projeto (A "Idea" Geral)
-> *"O nosso projeto é um catálogo de produtos com controle de estoque. Ele foi desenvolvido com uma arquitetura **Client-Server** (Cliente-Servidor). O cliente (frontend) é uma página web estática em HTML/CSS/JS que roda no navegador, e o servidor (backend) é uma API REST desenvolvida em Node.js com Express e Knex, integrada a um banco de dados relacional MySQL local."*
-
----
-
-### 2. Fluxo da Informação (Como os dados viajam)
-Explique o ciclo de vida de uma operação (por exemplo, **Cadastrar Produto**):
-1. **Frontend (Navegador):** O usuário preenche o formulário e clica no botão "Salvar". O arquivo `public/app.js` captura esse evento de envio, monta um objeto JSON com os dados do produto e dispara uma requisição `POST` para `http://localhost:3000/produtos` usando a **Fetch API** do JavaScript.
-2. **Backend (Servidor):** O servidor Express (`src/server.js`) intercepta a requisição na rota correspondente (`aplicacao.post('/produtos')`). Ele valida os campos obrigatórios (nome e preço).
-3. **Banco de Dados (MySQL):** O Express usa a biblioteca **Knex** (`src/db/knex.js`) para fazer a inserção no MySQL. O Knex traduz o comando JavaScript `bd('produtos').insert(...)` para o comando SQL correspondente (`INSERT INTO produtos ...`) de forma transparente.
-4. **Retorno:** O banco de dados insere o registro e retorna o ID. O servidor busca o produto recém-criado e envia uma resposta HTTP com o status `201 (Created)` e os dados do produto em formato JSON de volta para o navegador.
-5. **Atualização da Tela:** O arquivo `public/app.js` recebe a resposta de sucesso e executa a função `carregarProdutos()`, que limpa o formulário e atualiza a tabela na tela sem precisar recarregar a página.
-
----
-
-### 3. Explicando os Principais Arquivos Técnicos
-
-* **`src/server.js` (O Coração do Backend):**
-  * Explique que decidimos centralizar as rotas e a lógica no `server.js` para simplificar e tornar o entendimento mais direto.
-  * Ele usa o **Express** para criar o servidor web e o **CORS** para permitir que a nossa página frontend converse com a API REST.
-  * Contém os 5 endpoints do CRUD (Listar, Buscar por ID, Criar, Atualizar e Deletar) usando funções assíncronas (`async/await`) para aguardar o banco responder.
-* **`src/db/knex.js` e `knexfile.js` (A Conexão):**
-  * O `knexfile.js` lê as variáveis do arquivo `.env` para carregar as credenciais do MySQL de forma segura.
-  * O `knex.js` inicia a instância da conexão. Usamos o construtor do Knex apontando para o ambiente de desenvolvimento.
-* **`public/app.js` (O Cérebro do Frontend):**
-  * Contém as funções que escutam os botões do formulário.
-  * Usa o `fetch()` para fazer chamadas HTTP (GET, POST, PUT, DELETE) na API do backend.
-  * Manipula dinamicamente a árvore do documento (DOM) usando `.innerHTML` e template strings para montar as linhas da tabela de produtos.
-
----
-
-### 4. Dicas de Ouro para a Apresentação
-* **Demonstre primeiro:** Abra o navegador, faça um cadastro rápido, atualize o preço de um produto e exclua outro para mostrar que tudo funciona em tempo real.
-* **Mostre o banco atualizando:** Deixe o MySQL Workbench aberto ao lado e dê um `SELECT * FROM produtos;` após realizar alterações no site para provar que a persistência de dados está correta.
-* **Mencione a segurança:** Destaque que as credenciais do banco de dados (senha do root) ficam salvas localmente no arquivo `.env` e nunca são enviadas ao GitHub através do `.gitignore`, mantendo o código seguro.
-
----
-
 ## Referência
 
 Baseado no repositório do professor: https://github.com/marcioaraya/api-crud-js
