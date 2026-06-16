@@ -1,17 +1,15 @@
 const URL_API = 'http://localhost:3000/produtos';
 
-// Mostra mensagem de feedback
 function mostrarMensagem(texto, tipo) {
   const caixaMensagem = document.getElementById('mensagem');
   caixaMensagem.textContent = texto;
-  caixaMensagem.className = tipo; // 'sucesso' ou 'erro'
+  caixaMensagem.className = tipo;
   setTimeout(() => {
     caixaMensagem.className = '';
     caixaMensagem.textContent = '';
   }, 4000);
 }
 
-// Formata preço em reais
 function formatarPreco(valor) {
   return parseFloat(valor).toLocaleString('pt-BR', {
     style: 'currency',
@@ -19,7 +17,6 @@ function formatarPreco(valor) {
   });
 }
 
-// Carrega e exibe todos os produtos na tabela
 async function carregarProdutos() {
   const corpo = document.getElementById('corpoTabela');
   try {
@@ -51,7 +48,6 @@ async function carregarProdutos() {
   }
 }
 
-// Preenche o formulário com os dados do produto para edição
 async function editarProduto(id) {
   try {
     const resposta = await fetch(`${URL_API}/${id}`);
@@ -75,7 +71,6 @@ async function editarProduto(id) {
   }
 }
 
-// Exclui um produto pelo ID
 async function excluirProduto(id) {
   if (!confirm('Tem certeza que deseja excluir este produto?')) return;
 
@@ -94,7 +89,6 @@ async function excluirProduto(id) {
   }
 }
 
-// Limpa o formulário e volta ao modo de cadastro
 function limparFormulario() {
   document.getElementById('formularioProduto').reset();
   document.getElementById('campoId').value = '';
@@ -102,7 +96,6 @@ function limparFormulario() {
   document.getElementById('btnSalvar').textContent = 'Salvar';
 }
 
-// Envia o formulário (cadastrar ou atualizar)
 document.getElementById('formularioProduto').addEventListener('submit', async function (evento) {
   evento.preventDefault();
 
@@ -122,14 +115,12 @@ document.getElementById('formularioProduto').addEventListener('submit', async fu
     let resposta;
 
     if (id) {
-      // Atualizar produto existente
       resposta = await fetch(`${URL_API}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosProduto)
       });
     } else {
-      // Cadastrar novo produto
       resposta = await fetch(URL_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -151,8 +142,6 @@ document.getElementById('formularioProduto').addEventListener('submit', async fu
   }
 });
 
-// Botão limpar
 document.getElementById('btnLimpar').addEventListener('click', limparFormulario);
 
-// Carrega os produtos ao abrir a página
 carregarProdutos();

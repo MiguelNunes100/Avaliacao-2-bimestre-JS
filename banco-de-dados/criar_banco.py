@@ -1,36 +1,18 @@
-# -*- coding: utf-8 -*-
 import sys, io
-# Garante que o terminal Windows exiba caracteres especiais corretamente
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
-
-"""
-Script Python para criar o banco de dados loja_db
-e a tabela de produtos automaticamente.
-
-Uso:
-  1. Instale a dependência: pip install mysql-connector-python python-dotenv
-  2. Certifique-se de que o arquivo .env está configurado na raiz do projeto
-  3. Execute: python banco-de-dados/criar_banco.py
-
-Grupo: Miguel Miranda Nunes e Arthur Queiroz de Andrade
-Faculdade Senac - ADS 2026
-"""
 
 import os
 import sys
 
-# Tenta carregar o .env da raiz do projeto
 try:
     from dotenv import load_dotenv
-    # Sobe um nível a partir de banco-de-dados/ para encontrar o .env
     pasta_raiz = os.path.join(os.path.dirname(__file__), '..')
     load_dotenv(os.path.join(pasta_raiz, '.env'))
     print("[OK] Arquivo .env carregado com sucesso.")
 except ImportError:
     print("[AVISO] python-dotenv não instalado. Lendo variáveis do ambiente do sistema.")
 
-# Tenta importar o conector MySQL
 try:
     import mysql.connector
 except ImportError:
@@ -42,9 +24,6 @@ except ImportError:
     print()
     sys.exit(1)
 
-# -------------------------------------------------------
-# Configurações de conexão (lidas do .env ou padrão)
-# -------------------------------------------------------
 CONFIGURACAO = {
     'host':     os.getenv('DB_HOST',     'localhost'),
     'port':     int(os.getenv('DB_PORT', 3306)),
@@ -53,9 +32,6 @@ CONFIGURACAO = {
 }
 NOME_BANCO = os.getenv('DB_NAME', 'loja_db')
 
-# -------------------------------------------------------
-# Script SQL para criar o banco e a tabela
-# -------------------------------------------------------
 SQL_CRIAR_BANCO = f"CREATE DATABASE IF NOT EXISTS `{NOME_BANCO}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 
 SQL_CRIAR_TABELA = """
@@ -90,9 +66,6 @@ VALUES
    1299.00, 8, 'Móveis', 'https://via.placeholder.com/150', 'CADE-TX3-003', 'ThunderX3');
 """
 
-# -------------------------------------------------------
-# Execução principal
-# -------------------------------------------------------
 def main():
     print()
     print("=" * 55)
@@ -108,30 +81,25 @@ def main():
     cursor  = None
 
     try:
-        # 1. Conectar ao MySQL (sem banco específico ainda)
         print("[1/4] Conectando ao MySQL...")
         conexao = mysql.connector.connect(**CONFIGURACAO)
         cursor  = conexao.cursor()
         print("      Conectado com sucesso!")
 
-        # 2. Criar o banco de dados
         print(f"[2/4] Criando banco de dados '{NOME_BANCO}'...")
         cursor.execute(SQL_CRIAR_BANCO)
         cursor.execute(f"USE `{NOME_BANCO}`;")
         print(f"      Banco '{NOME_BANCO}' pronto!")
 
-        # 3. Criar a tabela de produtos
         print("[3/4] Criando tabela 'produtos'...")
         cursor.execute(SQL_CRIAR_TABELA)
         print("      Tabela 'produtos' criada!")
 
-        # 4. Inserir dados de exemplo
         print("[4/4] Inserindo produtos de exemplo...")
         cursor.execute(SQL_INSERIR_EXEMPLOS)
         conexao.commit()
         print(f"      {cursor.rowcount} produto(s) de exemplo inserido(s)!")
 
-        # Resultado final
         cursor.execute("SELECT COUNT(*) FROM produtos;")
         total, = cursor.fetchone()
         print()
@@ -160,7 +128,6 @@ def main():
             cursor.close()
         if conexao and conexao.is_connected():
             conexao.close()
-
 
 if __name__ == '__main__':
     main()
