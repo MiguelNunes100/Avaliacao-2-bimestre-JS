@@ -1,0 +1,25 @@
+{
+  "name": "catalogo-produtos",
+  "version": "1.0.0",
+  "description": "API REST para CRUD de produtos - Avaliação 2º Bimestre",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "migrar": "knex migrate:latest",
+    "desfazer": "knex migrate:rollback"
+  },
+  "keywords": [],
+  "author": "Miguel Miranda Nunes e Arthur Queiroz de Andrade",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "mysql2": "^3.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

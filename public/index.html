@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Produtos - Loja</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Formulário */
+    .formulario {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .formulario h2 {
+      font-size: 17px;
+      margin-bottom: 15px;
+      color: #2c3e50;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    .grade-formulario {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .campo-completo {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    textarea {
+      height: 70px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #2980b9;
+    }
+
+    .botoes {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    #btnSalvar {
+      background-color: #27ae60;
+      color: white;
+    }
+
+    #btnSalvar:hover {
+      background-color: #219a52;
+    }
+
+    #btnLimpar {
+      background-color: #95a5a6;
+      color: white;
+    }
+
+    #btnLimpar:hover {
+      background-color: #7f8c8d;
+    }
+
+    /* Mensagem de feedback */
+    #mensagem {
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      display: none;
+    }
+
+    #mensagem.sucesso {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    #mensagem.erro {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    /* Tabela */
+    .tabela-container {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    .tabela-container h2 {
+      font-size: 17px;
+      margin-bottom: 15px;
+      color: #2c3e50;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead {
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    th, td {
+      padding: 9px 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+      background-color: #eaf2fb;
+    }
+
+    .btn-editar {
+      background-color: #2980b9;
+      color: white;
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .btn-excluir {
+      background-color: #e74c3c;
+      color: white;
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+
+    .btn-editar:hover { background-color: #2471a3; }
+    .btn-excluir:hover { background-color: #c0392b; }
+
+    #semProdutos {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1>🛒 Catálogo de Produtos</h1>
+      <p>Faculdade Senac · ADS · Linguagem de Programação para Web I (JavaScript) · Miguel Nunes &amp; Arthur Queiroz</p>
+    </header>
+
+    <!-- Mensagem de feedback -->
+    <div id="mensagem"></div>
+
+    <!-- Formulário de cadastro / edição -->
+    <div class="formulario">
+      <h2 id="tituloFormulario">Cadastrar Novo Produto</h2>
+      <form id="formularioProduto">
+        <input type="hidden" id="campoId" />
+
+        <div class="grade-formulario">
+          <div>
+            <label for="campoNome">Nome *</label>
+            <input type="text" id="campoNome" placeholder="Nome do produto" required />
+          </div>
+          <div>
+            <label for="campoCodigo">Código SKU</label>
+            <input type="text" id="campoCodigo" placeholder="Ex: ELET-001" />
+          </div>
+
+          <div class="campo-completo">
+            <label for="campoDescricao">Descrição</label>
+            <textarea id="campoDescricao" placeholder="Descrição do produto..."></textarea>
+          </div>
+
+          <div>
+            <label for="campoPreco">Preço (R$) *</label>
+            <input type="number" id="campoPreco" placeholder="0.00" step="0.01" min="0" required />
+          </div>
+          <div>
+            <label for="campoQuantidade">Quantidade em Estoque</label>
+            <input type="number" id="campoQuantidade" placeholder="0" min="0" value="0" />
+          </div>
+
+          <div>
+            <label for="campoCategoria">Categoria</label>
+            <input type="text" id="campoCategoria" placeholder="Ex: Eletrônicos" />
+          </div>
+          <div>
+            <label for="campoFornecedor">Fornecedor</label>
+            <input type="text" id="campoFornecedor" placeholder="Nome do fornecedor" />
+          </div>
+
+          <div class="campo-completo">
+            <label for="campoImagem">URL da Imagem</label>
+            <input type="text" id="campoImagem" placeholder="https://..." />
+          </div>
+        </div>
+
+        <div class="botoes">
+          <button type="submit" id="btnSalvar">Salvar</button>
+          <button type="button" id="btnLimpar">Limpar / Novo</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tabela de produtos -->
+    <div class="tabela-container">
+      <h2>Lista de Produtos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>SKU</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Qtd.</th>
+            <th>Fornecedor</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabela">
+          <tr><td colspan="8" id="semProdutos">Carregando produtos...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>Avaliação do 2º Bimestre &mdash; Linguagem de Programação para Web I &mdash; Faculdade Senac 2026</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
