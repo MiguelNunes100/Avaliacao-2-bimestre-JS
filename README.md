@@ -51,8 +51,8 @@ O script vai criar o banco `loja_db`, a tabela `produtos` e inserir 3 produtos d
 1. Abra o **MySQL Workbench** e conecte-se ao seu servidor MySQL
 2. No menu superior, clique em **File → Open SQL Script...**
 3. Navegue até `banco-de-dados/` e abra o arquivo **`loja_db.sql`**
-4. Clique no botão **⚡ Execute** (ou `Ctrl + Shift + Enter`)
-5. No painel **Schemas** à esquerda, clique em 🔄 — o banco `loja_db` vai aparecer
+4. Clique no botão ** Execute** (ou `Ctrl + Shift + Enter`)
+5. No painel **Schemas** à esquerda, clique em - o banco `loja_db` vai aparecer
 
 ---
 
